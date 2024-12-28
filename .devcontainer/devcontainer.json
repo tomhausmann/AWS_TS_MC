@@ -5,10 +5,6 @@
     "features": {
         "ghcr.io/devcontainers/features/aws-cli:1": {
             "version": "latest"
-        },
-        "ghcr.io/devcontainers/features/git:1": {
-            "version": "latest",
-            "ppa": false
         }
     },
 
@@ -23,17 +19,14 @@
             ],
             "settings": {
                 "terminal.integrated.defaultProfile.linux": "bash",
+                "editor.defaultFormatter": "esbenp.prettier-vscode",
                 "editor.formatOnSave": true,
-                "editor.defaultFormatter": "esbenp.prettier-vscode"
+                "aws.credentials.sso.enabled": true
             }
         }
     },
 
-    "postCreateCommand": "npm install -g typescript ts-node aws-cdk",
+    "postCreateCommand": "npm install -g typescript ts-node aws-cdk && mkdir -p ~/.aws",
 
-    "remoteUser": "node",
-
-    "mounts": [
-        "source=${localEnv:HOME}${localEnv:USERPROFILE}/.aws,target=/home/node/.aws,type=bind,consistency=cached"
-    ]
+    "postStartCommand": "echo '[profile default]\nsso_session = my-sso\nsso_account_id = ${SSO_ACCOUNT_ID}\nsso_role_name = AdministratorAccess\nregion = eu-central-1\noutput = json\n\n[sso-session my-sso]\nsso_start_url = ${SSO_START_URL}\nsso_region = eu-central-1\nsso_registration_scopes = sso:account:access' > ~/.aws/config"
 }
