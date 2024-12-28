@@ -17,12 +17,12 @@ cat > ~/.aws/config << EOF
 sso_session = my-sso
 sso_account_id = ${SSO_ACCOUNT_ID}
 sso_role_name = AdministratorAccess
-region = us-east-1
+region = eu-central-1
 output = json
 
 [sso-session my-sso]
 sso_start_url = ${SSO_START_URL}
-sso_region = us-east-1
+sso_region = eu-central-1
 sso_registration_scopes = sso:account:access
 EOF
 
@@ -47,7 +47,7 @@ echo -e "\n${YELLOW}Press Enter when ready...${NC}"
 read
 
 # Start AWS SSO login process with device flow
-aws sso login --sso-session my-sso
+aws sso login --sso-session my-sso --use-device-code
 
 # Verify the new credentials
 if aws sts get-caller-identity &> /dev/null; then
